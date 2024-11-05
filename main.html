@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Target Shooting Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <center>
         <canvas id="myCanvas" width="1400" height="400" style="border:solid 2px black">
@@ -17,7 +19,7 @@
                 <input type="range" min="0" max="100" value="50" class="PB-range-slider" id="Vel">
                 <p class="slidervalue velValue">50</p>
             </div>
-            
+
         </div>
     </center>
 
@@ -31,12 +33,22 @@
         const W = canvas.width, H = canvas.height;
         let arrows = new Array(); // arrows (array of objects)
         let angle = 0
+
+        // Carregar imagem de background
+        const bgImage = new Image();
+        bgImage.src = './assets/Summer2.png';
+
+        const bgCloud = new Image();
+        bgCloud.src = './assets/4.png'
+
+        let cloudX = 0; // Posição inicial das nuvens
+
         window.onload = () => {
 
-            velocity.addEventListener("input",(e)=>{
-            e.preventDefault();
+            velocity.addEventListener("input", (e) => {
+                e.preventDefault();
 
-            document.querySelector(".velValue").innerHTML = velocity.value;
+                document.querySelector(".velValue").innerHTML = velocity.value;
             })
 
             render();
@@ -44,7 +56,7 @@
 
         canvas.addEventListener('click', e => {
             // add a new cannon ball
-            arrows.push(new Arrow(velocity.value,angle))
+            arrows.push(new Arrow(velocity.value, angle))
         });
 
         // Add the event listener for mousemove
@@ -57,12 +69,18 @@
             let dy = y - (H - 50);
             angle = Math.atan2(dy, dx);
             console.log(angle);
-            
+
         });
 
 
         function render() {
             ctx.clearRect(0, 0, W, H);
+
+            // draw background
+            ctx.drawImage(bgImage, 0, 0, W, H);
+
+            animate()
+
 
             //draw cannon
             ctx.fillStyle = "#457b9d";
@@ -93,10 +111,23 @@
         }
 
         function convertToRad(a) {
-            return a / (Math.PI/180)   
+            return a / (Math.PI / 180)
         }
 
-        
+
+        function animate() {
+            // Atualizar posição da imagem de nuvens para o efeito de movimento
+            cloudX -= 1;
+            if (cloudX <= -bgCloud.width) {
+                cloudX = 0; // Reinicia a posição para repetir a imagem
+            }
+
+            // Desenha a imagem em movimento
+            // ctx.clearRect(0, 0, W, H);
+            ctx.drawImage(bgCloud, cloudX, 0, bgCloud.width, H);
+            ctx.drawImage(bgCloud, cloudX + bgCloud.width, 0, bgCloud.width, H);
+
+        }
 
 
         class Arrow {
@@ -104,14 +135,14 @@
 
                 this.raius
 
-                this.x = 50 + 75 * Math.cos(angle)			// initial X position 
-                this.y = H - 50 + 75 * Math.sin(angle) 	// initial Y position 
+                this.x = 50 + 75 * Math.cos(angle)			// initial X position
+                this.y = H - 50 + 75 * Math.sin(angle) 	// initial Y position
 
                 this.A = 0.1 		// acceleration (gravity = 0.1 pixels per frame)
                 this.R = 5;
 
-                this.dX = vel/10 * Math.cos(angle) //initial velocity in X
-                this.dY = vel/10 * Math.sin(angle)	//initial velocity in Y
+                this.dX = vel / 10 * Math.cos(angle) //initial velocity in X
+                this.dY = vel / 10 * Math.sin(angle)	//initial velocity in Y
             }
             draw() {
                 ctx.fillStyle = "red";
@@ -123,14 +154,14 @@
             update() {
                 // if circle hits the bottom of the Canvas
                 if (this.y > H - this.R) {
-                    this.y = H - this.R; 
+                    this.y = H - this.R;
                     this.dX = this.dY = 0; // stop
 
                 }
                 else {
                     this.x += this.dX; // update circle X position (uniform motion)
                     this.dY += this.A; // increase circle velocity in Y (accelerated motion)
-                    this.y += this.dY; // update circle Y position 
+                    this.y += this.dY; // update circle Y position
                 }
             }
         };
@@ -139,4 +170,5 @@
 
     </script>
 </body>
+
 </html>
