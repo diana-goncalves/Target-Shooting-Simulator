@@ -32,15 +32,21 @@ bgCloud.src = './assets/background/4.png'
 let cloudX = 0; // Posição inicial das nuvens
 
 window.onload = () => {
-
+    // Atualizar o valor da força em tempo real
     velocity.addEventListener("input", (e) => {
         e.preventDefault();
-
         document.querySelector(".velValue").innerHTML = velocity.value;
-    })
+    });
+
+    // Atualizar o valor da resistência do ar em tempo real
+    resistance.addEventListener("input", (e) => {
+        e.preventDefault();
+        document.querySelector(".resistanceValue").innerHTML = resistance.value;
+    });
 
     render();
 };
+
 
 canvas.addEventListener('click', e => {
     // add a new cannon ball
