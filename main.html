@@ -10,7 +10,7 @@
 
 <body>
     <center>
-        <canvas id="myCanvas" width="1400" height="400" style="border:solid 2px black">
+        <canvas id="myCanvas" width="1200" height="400" style="border:solid 2px black">
             Your browser does not support HTML5 Canvas.
         </canvas>
         <div class="wrapper">
@@ -43,12 +43,17 @@
         let arm = new Image()
         arm.src = ""
 
-        // Carregar imagem de background
-        const bgImage = new Image();
-        bgImage.src = './assets/Summer2.png';
+        const bgSky = new Image();
+        bgSky.src = './assets/background/1.png'
+
+        const bgFloor = new Image();
+        bgFloor.src = './assets/background/2.png'
+
+        const bgGrass = new Image();
+        bgGrass.src = './assets/background/3.png'
 
         const bgCloud = new Image();
-        bgCloud.src = './assets/4.png'
+        bgCloud.src = './assets/background/4.png'
 
         let cloudX = 0; // Posição inicial das nuvens
 
@@ -89,7 +94,7 @@
 
         // add a idle animation
         canvas.addEventListener('mouseleave', e => {
-            player.src = "./assets/sprites/Idle.png"     
+            player.src = "./assets/sprites/Idle.png"
             mouseIn = false
         });
 
@@ -97,47 +102,48 @@
         function render() {
             ctx.clearRect(0, 0, W, H);
 
-            // draw background
-            ctx.drawImage(bgImage, 0, 0, W, H);
+            // Desenhar o background em camadas
+            ctx.drawImage(bgSky, 0, 0, W, H * 0.9);          // Céu ocupa 90% da altura do canvas
+            ctx.drawImage(bgGrass, 0, H * 0.65, W, H * 0.3);  // Grama ocupa 30% da altura, logo abaixo do céu
+            ctx.drawImage(bgFloor, 0, H * 0.8, W, H * 0.2);  // Chão ocupa os últimos 20% da altura do canvas
 
+            // Desenhar o jogador
+            ctx.drawImage(player, framePlayer, 0, 42, 42, 20, H - 100, 84, 84);
 
-            ctx.drawImage(player,framePlayer,0,42,42,20,H-100,84,84)
-
+            // Animação do frame do jogador
             if (frameDelay == 5) {
-                framePlayer+=42;
-                frameDelay=0
+                framePlayer += 42;
+                frameDelay = 0;
             } else {
                 frameDelay++;
             }
 
-            if (framePlayer==168) {
-                framePlayer=0;
+            if (framePlayer == 168) {
+                framePlayer = 0;
             }
 
-            animate()
+            // Função de animação das nuvens
+            animate();
 
-            // arm animation
+            // Desenhar o braço e ajustar posição conforme o ângulo
             if (mouseIn) {
                 if (angle > 0.7) {
-                    arm.src = "./assets/sprites/4.png"
-                    ctx.drawImage(arm,0,0,42,42,20,H-95,84,84)
-                }else if (angle < 0.7 && angle > 0 ) {
-                    arm.src = "./assets/sprites/3.png"
-                    ctx.drawImage(arm,0,0,42,42,20,H-95,84,84)
-                }else if (angle < 0 && angle > -0.9 ) {
-                    arm.src = "./assets/sprites/2.png"
-                    ctx.drawImage(arm,0,0,42,42,20,H-95,84,84)
-                }else if (angle < -0.9 ) {
-                arm.src = "./assets/sprites/1.png"
-                ctx.drawImage(arm,0,0,42,42,20,H-95,84,84)
+                    arm.src = "./assets/sprites/4.png";
+                } else if (angle < 0.7 && angle > 0) {
+                    arm.src = "./assets/sprites/3.png";
+                } else if (angle < 0 && angle > -0.9) {
+                    arm.src = "./assets/sprites/2.png";
+                } else if (angle < -0.9) {
+                    arm.src = "./assets/sprites/1.png";
                 }
+                ctx.drawImage(arm, 0, 0, 42, 42, 20, H - 95, 84, 84);
             }
-            
-            // if (shoot) {
+
+            // Desenhar e atualizar as setas
             arrows.forEach(arrow => {
                 arrow.draw();
                 arrow.update();
-            })
+            });
 
             requestAnimationFrame(render);
         }
@@ -148,18 +154,19 @@
 
 
         function animate() {
-            // Atualizar posição da imagem de nuvens para o efeito de movimento
-            cloudX -= 1;
+            // Atualizar posição das nuvens para o efeito de movimento
+            cloudX -= 0.3;
             if (cloudX <= -bgCloud.width) {
                 cloudX = 0; // Reinicia a posição para repetir a imagem
             }
 
-            // Desenha a imagem em movimento
-            // ctx.clearRect(0, 0, W, H);
-            ctx.drawImage(bgCloud, cloudX, 0, bgCloud.width, H);
-            ctx.drawImage(bgCloud, cloudX + bgCloud.width, 0, bgCloud.width, H);
-
+            // Desenha as nuvens animadas
+            ctx.drawImage(bgCloud, cloudX, 0, bgCloud.width, H * 1.2); // Primeira repetição
+            ctx.drawImage(bgCloud, cloudX + bgCloud.width, 0, bgCloud.width, H * 1.2); // Segunda repetição
+            ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Terceira repetição
         }
+
+
 
 
         class Arrow {
