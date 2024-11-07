@@ -15,12 +15,12 @@
         </canvas>
         <div class="wrapper">
             <div class="PB-range-slider-div">
-                <p class="slidervalue">Velocidade:</p>
+                <p class="slidervalue">Força:</p>
                 <input type="range" min="0" max="100" value="50" class="PB-range-slider" id="Vel">
                 <p class="slidervalue velValue">50</p>
             </div>
-
         </div>
+        <script src="script.js"></script>
     </center>
 
 
@@ -164,6 +164,7 @@
             ctx.drawImage(bgCloud, cloudX, 0, bgCloud.width, H * 1.2); // Primeira repetição
             ctx.drawImage(bgCloud, cloudX + bgCloud.width, 0, bgCloud.width, H * 1.2); // Segunda repetição
             ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Terceira repetição
+            ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Quarta repetição
         }
 
 
