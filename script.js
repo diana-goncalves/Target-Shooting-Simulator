@@ -2,6 +2,7 @@
 const canvas = document.querySelector('#myCanvas');
 const ctx = canvas.getContext("2d");
 const velocity = document.querySelector("#Vel");
+const resistance = document.querySelector("#resistance")
 
 const W = canvas.width, H = canvas.height;
 let arrows = new Array(); // arrows (array of objects)
@@ -139,8 +140,6 @@ function animate() {
     ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Terceira repetição
     ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Quarta repetição
 }
-
-
 
 
 class Arrow {
