@@ -5,7 +5,7 @@ const velocity = document.querySelector("#Vel");
 const resistance = document.querySelector("#resistance")
 
 const W = canvas.width, H = canvas.height;
-let arrows = new Array(); // arrows (array of objects)
+let arrowsList = new Array(); // arrowsList (array of objects)
 let angle = 0
 
 //Sprite
@@ -16,9 +16,16 @@ let frameDelay = 0;
 let mouseIn = false;
 let arm = new Image()
 arm.src = ""
+
+// Arrow
+let arrow = new Image()
+arrow.src = "./assets/Arrow.png"
+
+// Targer
 let target = new Image()
 target.src = "./assets/semfundo.png"
 
+// Background
 const bgSky = new Image();
 bgSky.src = './assets/background/1.png'
 
@@ -32,6 +39,7 @@ const bgCloud = new Image();
 bgCloud.src = './assets/background/4.png'
 
 let cloudX = 0; // Posição inicial das nuvens
+
 
 window.onload = () => {
     // Atualizar o valor da força em tempo real
@@ -52,7 +60,7 @@ window.onload = () => {
 //Evento de disparar
 canvas.addEventListener('click', e => {
     // add a new cannon ball
-    arrows.push(new Arrow(velocity.value, angle))
+    arrowsList.push(new Arrow(velocity.value, angle))
 });
 
 // Evento de angulo
@@ -125,7 +133,7 @@ function render() {
     }
 
     // Desenhar e atualizar as setas
-    arrows.forEach(arrow => {
+    arrowsList.forEach(arrow => {
         arrow.draw();
         arrow.update();
     });
@@ -133,7 +141,7 @@ function render() {
     requestAnimationFrame(render);
 }
 
-function convertToRad(a) {
+function convertToDegrees(a) {
     return a / (Math.PI / 180)
 }
 
@@ -168,10 +176,14 @@ class Arrow {
         this.dY = vel / 10 * Math.sin(angle)	//initial velocity in Y
     }
     draw() {
-        ctx.fillStyle = "red";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.R, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.fillStyle = "red";
+        // ctx.beginPath();
+        // ctx.arc(this.x, this.y, this.R, 0, 2 * Math.PI);
+        // ctx.fill();
+
+        ctx.drawImage(arrow, this.x, this.y)
+
+
     }
 
     update() {
@@ -188,9 +200,9 @@ class Arrow {
 
             //console.log("dx: "+this.dX);
             //console.log("dy: "+this.dY);
-            console.log(`${convertToRad(Math.atan2(this.dX,this.dY))}`);
-            
-            
+            console.log(`${convertToDegrees(Math.atan2(this.dX,this.dY))}`);
+
+
         }
     }
 };
