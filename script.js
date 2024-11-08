@@ -185,6 +185,12 @@ class Arrow {
             this.x += this.dX; // update circle X position (uniform motion)
             this.dY += this.A; // increase circle velocity in Y (accelerated motion)
             this.y += this.dY; // update circle Y position
+
+            //console.log("dx: "+this.dX);
+            //console.log("dy: "+this.dY);
+            console.log(`${convertToRad(Math.atan2(this.dX,this.dY))}`);
+            
+            
         }
     }
 };
