@@ -16,6 +16,8 @@ let frameDelay = 0;
 let mouseIn = false;
 let arm = new Image()
 arm.src = ""
+let target = new Image()
+target.src = "./assets/semfundo.png"
 
 const bgSky = new Image();
 bgSky.src = './assets/background/1.png'
@@ -47,13 +49,13 @@ window.onload = () => {
     render();
 };
 
-
+//Evento de disparar
 canvas.addEventListener('click', e => {
     // add a new cannon ball
     arrows.push(new Arrow(velocity.value, angle))
 });
 
-// Add the event listener for mousemove
+// Evento de angulo
 canvas.addEventListener('mousemove', e => {
     //mouse cursor coordinates
     let x = e.offsetX; let y = e.offsetY;
@@ -88,7 +90,10 @@ function render() {
     ctx.drawImage(bgFloor, 0, H * 0.8, W, H * 0.2);  // Chão ocupa os últimos 20% da altura do canvas
 
     // Desenhar o jogador
-    ctx.drawImage(player, framePlayer, 0, 42, 42, 20, H - 100, 84, 84);
+    ctx.drawImage(player, framePlayer, 0, 42, 42, 0, H - 160, 148, 148);
+
+    ctx.drawImage(target, W-150, H-120, 100,100);  // Chão ocupa os últimos 20% da altura do canvas
+
 
     // Animação do frame do jogador
     if (frameDelay == 5) {
@@ -109,14 +114,14 @@ function render() {
     if (mouseIn) {
         if (angle > 0.7) {
             arm.src = "./assets/sprites/4.png";
-        } else if (angle < 0.7 && angle > 0) {
-            arm.src = "./assets/sprites/3.png";
-        } else if (angle < 0 && angle > -0.9) {
+        } else if (angle < 0.7 && angle > -0.2) {
+            arm.src = "./assets/sprites/3.png"
+        } else if (angle < -0.2 && angle > -0.7) {
             arm.src = "./assets/sprites/2.png";
-        } else if (angle < -0.9) {
+        } else if (angle < -0.7) {
             arm.src = "./assets/sprites/1.png";
         }
-        ctx.drawImage(arm, 0, 0, 42, 42, 20, H - 95, 84, 84);
+        ctx.drawImage(arm, 0, 0, 42, 42, 0, H - 145, 148, 148);
     }
 
     // Desenhar e atualizar as setas
@@ -153,8 +158,8 @@ class Arrow {
 
         this.raius
 
-        this.x = 50 + 75 * Math.cos(angle)			// initial X position
-        this.y = H - 50 + 75 * Math.sin(angle) 	// initial Y position
+        this.x = 50 + 60 * Math.cos(angle)			// initial X position
+        this.y = H - 40 + 60 * Math.sin(angle) 	// initial Y position
 
         this.A = 0.1 		// acceleration (gravity = 0.1 pixels per frame)
         this.R = 5;
