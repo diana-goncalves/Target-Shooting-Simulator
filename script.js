@@ -59,8 +59,10 @@ window.onload = () => {
 
 //Evento de disparar
 canvas.addEventListener('click', e => {
+    let gravity = +document.querySelector('input[name="gravity"]:checked').value;
+    
     // add a new cannon ball
-    arrowsList.push(new Arrow(velocity.value, angle))
+    arrowsList.push(new Arrow(velocity.value, angle, gravity))
 });
 
 // Evento de angulo
@@ -162,14 +164,14 @@ function animate() {
 
 
 class Arrow {
-    constructor(vel, angle) {
+    constructor(vel, angle, gravity) {
 
         this.raius
 
         this.x = 50 + 60 * Math.cos(angle)			// initial X position
-        this.y = H - 40 + 60 * Math.sin(angle) 	// initial Y position
+        this.y = H - 100 + 60 * Math.sin(angle) 	// initial Y position
 
-        this.A = 0.1 		// acceleration (gravity = 0.1 pixels per frame)
+        this.A = gravity; 		// acceleration (gravity = 0.1 pixels per frame)
         this.R = 5;
 
         this.dX = vel / 10 * Math.cos(angle) //initial velocity in X
