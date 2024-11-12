@@ -61,7 +61,7 @@ canvas.addEventListener("click", (e) => {
   let gravity = +document.querySelector('input[name="gravity"]:checked').value;
 
   // add a new cannon ball
-  arrowsList.push(new Arrow(velocity.value, angle, gravity));
+  arrowsList.push(new Arrow(velocity.value, angle, gravity, resistance.value));
 });
 
 // Angle event
@@ -70,7 +70,7 @@ canvas.addEventListener("mousemove", (e) => {
   let x = e.offsetX;
   let y = e.offsetY;
 
-  // update cannon ORIENTATION angle​
+  // update arrow ORIENTATION angle​
   let dx = x - 50;
   let dy = y - (H - 50);
   angle = Math.atan2(dy, dx);
@@ -159,12 +159,13 @@ function animate() {
 }
 
 class Arrow {
-  constructor(vel, angle, gravity) {
+  constructor(vel, angle, gravity, resistance) {
     this.x = 50 + 60 * Math.cos(angle); // posição inicial X
     this.y = H - 100 + 60 * Math.sin(angle); // posição inicial Y
 
-    this.A = gravity;
     this.R = 5;
+    this.A = gravity; // graity selected
+    this.resistance = resistance; //add air resistence
 
     this.dX = (vel / 10) * Math.cos(angle); // velocidade inicial em X
     this.dY = (vel / 10) * Math.sin(angle); // velocidade inicial em Y
@@ -212,14 +213,21 @@ class Arrow {
 
   update() {
     // if circle hits the bottom of the Canvas
-    if (this.y > H - this.R) {
-      this.y = H - this.R;
-      this.dX = this.dY = 0;
+    if (this.y > H - 44) {
+
+        this.y = H - 44;
+        this.dX = this.dY = 0;
+
     } else {
-      this.x += this.dX;
-      this.dY += this.A;
-      this.y += this.dY;
-      console.log(`${convertToDegrees(Math.atan2(this.dX, this.dY))}`);
+        this.dY += this.A * this.resistance;
+        
+        this.x += this.dX;
+        this.y += this.dY;
+        console.log(this.y);
+        console.log("ALTURA CANVAS: "+ H);
+      
+      
+      //console.log(`${convertToDegrees(Math.atan2(this.dX, this.dY))}`);
     }
 
     // Atualiza o ângulo alvo para um movimento mais fluido
