@@ -25,6 +25,9 @@ arrow.src = "./assets/Arrow.png";
 // Target
 let target = new Image();
 target.src = "./assets/Target.png";
+const targetX = W - 115;
+const targetY = H - 85;
+const targetRadius = 40;
 
 // Background
 const bgSky = new Image();
@@ -93,15 +96,15 @@ function render() {
   ctx.clearRect(0, 0, W, H);
 
   // Draw the background layers
-  ctx.drawImage(bgSky, 0, 0, W, H * 0.9); // Céu ocupa 90% da altura do canvas
-  ctx.drawImage(bgGrass, 0, H * 0.65, W, H * 0.3); // Grama ocupa 30% da altura, logo abaixo do céu
-  ctx.drawImage(bgFloor, 0, H * 0.8, W, H * 0.2); // Chão ocupa os últimos 20% da altura do canvas
+  ctx.drawImage(bgSky, 0, 0, W, H * 0.9);
+  ctx.drawImage(bgGrass, 0, H * 0.65, W, H * 0.3);
+  ctx.drawImage(bgFloor, 0, H * 0.8, W, H * 0.2);
 
   // Draw the player
   ctx.drawImage(player, framePlayer, 0, 42, 42, 0, H - 160, 148, 148);
 
   // Draw the target
-  ctx.drawImage(target, W - 150, H - 120, 100, 100); // Chão ocupa os últimos 20% da altura do canvas
+  ctx.drawImage(target, W - 150, H - 120, 100, 100);
 
   // Player frame animation
   if (frameDelay == 5) {
@@ -160,12 +163,12 @@ function animate() {
 
 class Arrow {
   constructor(vel, angle, gravity, resistance) {
-    this.x = 50 + 60 * Math.cos(angle); // posição inicial X
-    this.y = H - 100 + 60 * Math.sin(angle); // posição inicial Y
+    this.x = 50 + 60 * Math.cos(angle); // Initial arrow position X
+    this.y = H - 100 + 60 * Math.sin(angle); // initial arrow position Y
 
     this.R = 5;
-    this.A = gravity; // graity selected
-    this.resistance = resistance; //add air resistence
+    this.A = gravity; // Gravity selected
+    this.resistance = resistance; // Add air resistence
 
     this.dX = (vel / 10) * Math.cos(angle); // velocidade inicial em X
     this.dY = (vel / 10) * Math.sin(angle); // velocidade inicial em Y
@@ -175,6 +178,7 @@ class Arrow {
     this.currentAngle = -Math.PI / 7.2; // Starting angle (25° up)
     this.targetAngle = -Math.PI / 7.2; // Initial target angle (25° down)
     this.angleSpeed = 0.05; // Angle change speed
+    this.stuck = false;
   }
 
   draw() {
@@ -211,26 +215,43 @@ class Arrow {
     }
   }
 
+  checkCollisionWithTarget() {
+    // Calculates the distance between the center of the arrow and the center of the target
+    const dx = this.x - targetX;
+    const dy = this.y - targetY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Checks whether the distance is less than or equal to the sum of the rays (collision)
+    if (distance <= this.R + targetRadius) {
+      this.stuck = true; // Marca a flecha como presa no alvo
+      this.dX = 0; // Zera a velocidade para garantir que a flecha pare
+      this.dY = 0;
+    }
+  }
+
   update() {
+    // // Checks if the arrow is stuck in the target; if so, it does not update the position
+    if (this.stuck) {
+      return;
+    }
+
     // if circle hits the bottom of the Canvas
     if (this.y > H - 44) {
-
-        this.y = H - 44;
-        this.dX = this.dY = 0;
-
+      this.y = H - 44;
+      this.dX = this.dY = 0;
     } else {
-        this.dY += this.A * this.resistance;
-        
-        this.x += this.dX;
-        this.y += this.dY;
-        console.log(this.y);
-        console.log("ALTURA CANVAS: "+ H);
-      
-      
+      this.dY += this.A * this.resistance;
+
+      this.x += this.dX;
+      this.y += this.dY;
+      console.log(this.y);
+      console.log("ALTURA CANVAS: " + H);
+
       //console.log(`${convertToDegrees(Math.atan2(this.dX, this.dY))}`);
     }
 
-    // Atualiza o ângulo alvo para um movimento mais fluido
     this.getInclinationAngle();
+
+    this.checkCollisionWithTarget();
   }
 }
