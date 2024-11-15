@@ -1,3 +1,7 @@
+body{
+  background: rgb(150,244,144);
+  background: linear-gradient(90deg, rgba(150,244,144,0.3618697478991597) 0%, rgba(181,191,255,0.3562675070028011) 100%);
+}
 #myCanvas{
   cursor: crosshair;
 }

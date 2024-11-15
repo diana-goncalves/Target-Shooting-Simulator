@@ -151,6 +151,7 @@ function convertToDegrees(a) {
 function animate() {
   // Update cloud position for motion effect
   cloudX -= 0.3;
+  
   if (cloudX <= -bgCloud.width) {
     cloudX = 0; // Reset position to repeat image
   }
@@ -158,7 +159,7 @@ function animate() {
   ctx.drawImage(bgCloud, cloudX, 0, bgCloud.width, H * 1.2); // First repetition
   ctx.drawImage(bgCloud, cloudX + bgCloud.width, 0, bgCloud.width, H * 1.2); // Second repetition
   ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Third repetition
-  ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Fourth repetition
+  ctx.drawImage(bgCloud, cloudX + 3 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Fourth repetition
 }
 
 class Arrow {
