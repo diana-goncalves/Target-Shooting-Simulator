@@ -30,9 +30,6 @@ const targetY = H - 85;
 const targetRadius = 40;
 
 // Background
-const background = new Image();
-background.src = "./assets/background/earth.png";
-
 const bgSky = new Image();
 bgSky.src = "./assets/background/earth_sky.png";
 
@@ -95,61 +92,13 @@ canvas.addEventListener("mouseleave", (e) => {
   mouseIn = false;
 });
 
-const backgrounds = [
-  {
-    image: "",
-    cloud: "./assets/background/earth_cloud.png",
-    floor: "./assets/background/earth_floor.png",
-    sky: "./assets/background/earth_sky.png",
-    grass: "./assets/background/earth_grass.png",
-  },
-  {
-    image: "./assets/background/Mars.webp",
-    sky: "",
-    floor: "",
-    cloud: "",
-    grass: "",
-  },
-  {
-    image: "./assets/background/Moon.webp",
-    sky: "",
-    floor: "",
-    cloud: "",
-    grass: "",
-  },
-];
-
-function updateBackground(planet) {
-  const selectedBackground = backgrounds[planet];
-
-  background.src = selectedBackground.image;
-  bgCloud.src = selectedBackground.cloud;
-  bgFloor.src = selectedBackground.floor;
-  bgSky.src = selectedBackground.sky;
-  bgGrass.src = selectedBackground.grass;
-}
-
-// Adiciona eventos às opções de planeta
-document.querySelector(".terra").addEventListener("click", () => {
-  updateBackground(0);
-});
-
-document.querySelector(".marte").addEventListener("click", () => {
-  updateBackground(1);
-});
-
-document.querySelector(".lua").addEventListener("click", () => {
-  updateBackground(2);
-});
-
 function render() {
   ctx.clearRect(0, 0, W, H);
 
   // Draw the background layers
-  ctx.drawImage(background, 0, 0, W, H);
   ctx.drawImage(bgSky, 0, 0, W, H * 0.9);
   ctx.drawImage(bgGrass, 0, H * 0.65, W, H * 0.3);
-  ctx.drawImage(bgFloor, 0, H * 0.7, W, H * 0.3);
+  ctx.drawImage(bgFloor, 0, H * 0.8, W, H * 0.2);
 
   // Draw the player
   ctx.drawImage(player, framePlayer, 0, 42, 42, 0, H - 160, 148, 148);
