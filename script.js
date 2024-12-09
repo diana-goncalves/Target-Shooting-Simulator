@@ -296,8 +296,6 @@ class Arrow {
 
       this.x += this.dX;
       this.y += this.dY;
-      console.log(this.y);
-      console.log("ALTURA CANVAS: " + H);
     }
 
     this.getInclinationAngle();
