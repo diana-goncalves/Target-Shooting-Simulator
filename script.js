@@ -80,7 +80,6 @@ canvas.addEventListener("mousemove", (e) => {
   let dx = x - 50;
   let dy = y - (H - 50);
   angle = Math.atan2(dy, dx);
-  console.log(angle);
 });
 
 // add a attack animation
@@ -201,12 +200,13 @@ function convertToDegrees(a) {
 
 function animate() {
   // Update cloud position for motion effect
-  cloudX -= 0.3;
+  cloudX -= 0.3; // cloudX value is reduced by 0.3 pixels and moves to the left
 
   if (cloudX <= -bgCloud.width) {
     cloudX = 0; // Reset position to repeat image
   }
 
+  // Ensures that the cloud image covers the entire canvas horizontally
   ctx.drawImage(bgCloud, cloudX, 0, bgCloud.width, H * 1.2); // First repetition
   ctx.drawImage(bgCloud, cloudX + bgCloud.width, 0, bgCloud.width, H * 1.2); // Second repetition
   ctx.drawImage(bgCloud, cloudX + 2 * bgCloud.width, 0, bgCloud.width, H * 1.2); // Third repetition
@@ -298,8 +298,6 @@ class Arrow {
       this.y += this.dY;
       console.log(this.y);
       console.log("ALTURA CANVAS: " + H);
-
-      //console.log(`${convertToDegrees(Math.atan2(this.dX, this.dY))}`);
     }
 
     this.getInclinationAngle();
